@@ -1,0 +1,24 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug server in Docker",
+            "containerName": "cloudfolioserver-dev",
+            "type": "docker",
+            "request": "launch",
+            "platform": "python",
+            "preLaunchTask": "docker-run: debug",
+            "removeContainerAfterDebug": true,
+            "python": {
+                "pathMappings": [
+                    {
+                        "localRoot": "${workspaceFolder}/app",
+                        "remoteRoot": "/app"
+                    }
+                ],
+                "projectType": "flask",
+                "port": 5678,
+            }
+        }
+    ]
+}

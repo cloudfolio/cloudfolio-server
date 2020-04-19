@@ -1,0 +1,33 @@
+version: '3.4'
+
+services:
+  cloudfolioserver:
+    image: cloudfolioserver
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 5000:5000
+      - 5678:5678
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.cloudfolio_api.rule=PathPrefix('/api')"
+      - "traefik.http.routers.cloudfolio_api.entrypoints=web"
+
+  traefik:
+    image: traefik:2.2
+    ports:
+      - 80
+      - 443
+    command:
+      - "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=PathPrefix('/traefik')"
+      - "traefik.http.service.traefik.address=:8080"
+
